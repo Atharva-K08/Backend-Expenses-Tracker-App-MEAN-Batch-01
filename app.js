@@ -33,9 +33,14 @@ app.use(morgan("dev"));
 // Data Base Connection
 connect_DB();
 
-// ==================== HEALTH CHECK ROUTE ====================
+// ==================== ROUTES ====================
 
 app.use("/api/auth", require("./routes/user.routes"))
+app.use("/api/transcation-category", require("./routes/transcationCategory.routes"))
+app.use("/api/transaction", require("./routes/transcation.routes"))
+
+// ==================== HEALTH CHECK ROUTE ====================
+
 app.get("/api/health", (req, res) => {
   res.json({ message: "Server is running successfully" });
 });

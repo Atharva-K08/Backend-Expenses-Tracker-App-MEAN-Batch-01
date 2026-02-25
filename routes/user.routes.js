@@ -3,6 +3,7 @@ const {
   forgotPassword,
   resetPassword,
   createUserController,
+  loginUserController,
 } = require("../controllers/user.controller");
 const express = require("express");
 const router = express.Router();
@@ -27,7 +28,6 @@ router.post(
   [body("email").isEmail().withMessage("Please enter a valid email")],
   forgotPassword,
 );
-
 // Route 2: Verify reset token and reset password
 router.post(
   "/reset-password",
@@ -39,5 +39,12 @@ router.post(
   ],
   resetPassword,
 );
+// Route 3: Login user via email and password
+router.post("/login", [
+  body("email").isEmail().withMessage("Please enter a valid email"),
+  body("password")
+    .isLength({ min: 6 })
+    .withMessage("Password must be at least 6 characters"),
+],loginUserController);
 
 module.exports = router;

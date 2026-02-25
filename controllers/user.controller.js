@@ -159,3 +159,40 @@ module.exports.resetPassword = async (req, res, next) => {
     next(error);
   }
 };
+
+module.exports.loginUserController = async (req, res, next) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    const user = await findUser(req.body.email);
+    if (!user) {
+        res.status(400).json({
+        success: false,
+        message: "User with this email not found",
+      });
+    }
+    const match = await bcrypt.compare(req.body.password, user.password );
+    if (!match) {
+        res.status(400).json({
+        success: false,
+        message: "invalid credentials",
+      });
+    }
+    
+    const loginToken = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '1d' },
+    );
+
+    res.status(200).json({
+      message: "user logged successfully",
+      success: true,
+      token: loginToken
+    });
+  } catch (error) {
+    next(error);
+  }
+};

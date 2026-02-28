@@ -6,12 +6,13 @@ const {
   updateTranscationCategoryController,
   deleteTranscationCategoryController,
 } = require("../controllers/transcationCategory.controller");
+const { authMiddleware } = require("../middlewares/auth.middleware");
 
 const router = express.Router();
 
-router.post("/", createTranscationCategoryController);
+router.post("/",authMiddleware, createTranscationCategoryController);
 router.get("/:id", getTranscationCategoryController);
-router.get("/user/:userId", getTranscationCategoriesController);
+router.get("/",authMiddleware, getTranscationCategoriesController);
 router.put("/:id", updateTranscationCategoryController);
 router.delete("/:id", deleteTranscationCategoryController);
 

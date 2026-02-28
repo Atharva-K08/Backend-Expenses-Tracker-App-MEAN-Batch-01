@@ -16,13 +16,13 @@ const {
  */
 module.exports.createTranscationCategoryController = async (req, res, next) => {
   try {
-    if (!req.body.userId) {
+    if (!req.user.id) {
       return res.status(400).json({
         success: false,
         message: "User ID is required",
       });
     }
-
+    req.body.userId = req.user.id
     if (!req.body.name || req.body.name.trim() === "") {
       return res.status(400).json({
         success: false,
@@ -88,7 +88,7 @@ module.exports.getTranscationCategoryController = async (req, res, next) => {
  */
 module.exports.getTranscationCategoriesController = async (req, res, next) => {
   try {
-    const userId = req.user?.id  || req.params.userId;
+    const userId = req.user.id;
 
     if (!userId) {
       return res.status(400).json({

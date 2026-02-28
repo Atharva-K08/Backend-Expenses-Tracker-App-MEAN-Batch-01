@@ -16,13 +16,20 @@ const {
  */
 module.exports.createTransactionController = async (req, res, next) => {
   try {
-    if (!req.body.userId) {
+    if (!req.user.id) {
       return res.status(400).json({
         success: false,
         message: "User ID is required",
       });
     }
-
+    req.body.userId = req.user.id
+    if (!req.body.amount || req.body.amount <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Amount must be greater than zero",
+      });
+    }
+    req.body.amount = parseFloat(req.body.amount);
     const transaction = await createTranscation(req.body);
 
     res.status(201).json({

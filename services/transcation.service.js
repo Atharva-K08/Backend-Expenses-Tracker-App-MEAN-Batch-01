@@ -9,7 +9,7 @@ module.exports.getTranscationById = async (id) => {
 }
 
 module.exports.getTranscations = async ({userId}) => {
-    return await TranscationModel.find({ userId });
+    return await TranscationModel.find({ userId }).populate("category", "name");
 }
 
 module.exports.deleteTranscation = async (id) => {

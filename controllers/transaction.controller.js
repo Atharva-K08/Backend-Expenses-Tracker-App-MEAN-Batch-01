@@ -88,7 +88,7 @@ module.exports.getTransactionController = async (req, res, next) => {
  */
 module.exports.getTransactionsByUserController = async (req, res, next) => {
   try {
-    const userId = req.user?.id || req.body.userId;
+    const userId = req.user.id;
 
     if (!userId) {
       return res.status(400).json({

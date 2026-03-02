@@ -30,6 +30,7 @@ const transcationSchema = mongooes.Schema(
     },
     category: {
       type: mongooes.Schema.Types.ObjectId,
+      ref: "TranscationCategory",
       required: true,
     },
     date: {

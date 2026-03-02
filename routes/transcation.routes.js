@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.post("/",authMiddleware, createTransactionController);
 router.get("/:id", getTransactionController);
-router.get("/user/:userId", getTransactionsByUserController);
+router.get("/", authMiddleware, getTransactionsByUserController);
 router.put("/:id", updateTransactionController);
 router.delete("/:id", deleteTransactionController);
 

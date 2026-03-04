@@ -1,3 +1,4 @@
+const { getAnalytics } = require("../services/analytics.service");
 const {
   createTranscation,
   getTranscationById,
@@ -22,7 +23,7 @@ module.exports.createTransactionController = async (req, res, next) => {
         message: "User ID is required",
       });
     }
-    req.body.userId = req.user.id
+    req.body.userId = req.user.id;
     if (!req.body.amount || req.body.amount <= 0) {
       return res.status(400).json({
         success: false,
@@ -110,7 +111,6 @@ module.exports.getTransactionsByUserController = async (req, res, next) => {
   }
 };
 
-
 /**
  * Update a transaction
  * @param {Object} req - Express request object
@@ -190,5 +190,28 @@ module.exports.deleteTransactionController = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
+  }
+};
+
+module.exports.getTranscationsSummary = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const startOfMonth = new Date(
+      new Date().getFullYear(),
+      new Date().getMonth(),
+      1,
+    );
+    const endOfMonth = new Date(
+      new Date().getFullYear(),
+      new Date().getMonth() + 1,
+      0,
+    );
+    const response = await getAnalytics(userId, startOfMonth, endOfMonth);
+    res.status(200).json({
+      success: true,
+      data: response,
+    });
+  } catch (err) {
+    next(err);
   }
 };
